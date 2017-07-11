@@ -134,6 +134,12 @@ void janus_set_no_media_timer(uint timer);
 /*! \brief Method to get the current no-media event timer (see above)
  * @returns The current no-media event timer */
 uint janus_get_no_media_timer(void);
+/*! \brief Method to modify the event handler statistics period (i.e., the number of seconds that should pass before Janus notifies event handlers about media statistics for a PeerConnection)
+ * @param[in] timer The new timer value, in seconds */
+void janus_ice_set_event_stats_period(int period);
+/*! \brief Method to get the current event handler statistics period (see above)
+ * @returns The current event handler stats period */
+int janus_ice_get_event_stats_period(void);
 /*! \brief Method to check whether libnice debugging has been enabled (http://nice.freedesktop.org/libnice/libnice-Debug-messages.html)
  * @returns True if libnice debugging is enabled, FALSE otherwise */
 gboolean janus_ice_is_ice_debugging_enabled(void);
@@ -321,6 +327,7 @@ struct janus_ice_handle {
 	GList *pending_trickles;
 	/*! \brief Queue of outgoing packets to send */
 	GAsyncQueue *queued_packets;
+    GQueue *buffer_queued_packets;
 	/*! \brief GLib thread for sending outgoing packets */
 	GThread *send_thread;
 	/*! \brief Atomic flag to make sure we only create the thread once */
